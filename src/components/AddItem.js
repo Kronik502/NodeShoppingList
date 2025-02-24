@@ -1,64 +1,74 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { addItem } from '../actions/shoppingListActions';  // Import the action
 import './AddItem.css';
 
 const AddItem = () => {
-  // State to manage form input fields
-  const [item, setItem] = useState({
-    name: '',
-    quantity: '',
-    description: '',
-    price: '',
-  });
+  const [item, setItem] = useState({ name: '', quantity: '', description: '', price: '' });
+  const [error, setError] = useState('');
 
-  const dispatch = useDispatch();  // Redux dispatch to trigger actions
-
-  // Handle input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setItem((prevItem) => ({
-      ...prevItem,
-      [name]: value,
-    }));
+    setItem({ ...item, [name]: value });
   };
 
-  // Handle form submission
-  const handleSubmit = (e) => {
-    e.preventDefault();  // Prevent form from reloading the page
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');  // Reset any previous error
 
-    // Additional validation for quantity and price to ensure positive values
+    // Validate fields
     if (!item.name || !item.quantity || !item.description || !item.price) {
-      alert('Please fill in all fields!');
+      setError('Please fill in all fields!');
       return;
     }
 
-    if (isNaN(item.quantity) || item.quantity <= 0) {
-      alert('Please enter a valid positive quantity.');
+    // Ensure quantity is a positive integer
+    const quantity = parseInt(item.quantity, 10);
+    if (isNaN(quantity) || quantity <= 0) {
+      setError('Quantity must be a positive number!');
       return;
     }
 
-    if (isNaN(item.price) || item.price <= 0) {
-      alert('Please enter a valid positive price.');
+    // Ensure price is a positive number
+    const price = parseFloat(item.price);
+    if (isNaN(price) || price <= 0) {
+      setError('Price must be a positive number!');
       return;
     }
 
-    // Dispatch the action to add the new item
-    dispatch(addItem(item));
+    // Create a new item with correct data types
+    const newItem = {
+      ...item,
+      quantity: quantity,
+      price: price,
+    };
 
-    // Clear the form after submission
-    setItem({
-      name: '',
-      quantity: '',
-      description: '',
-      price: '',
-    });
+    // Sending the new item to the backend (or dispatch to Redux if necessary)
+    try {
+      const response = await fetch('http://localhost:5000/items', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newItem),
+      });
+
+      if (!response.ok) {
+        const data = await response.json();
+        setError(data.message || 'Failed to add item');
+        return;
+      }
+
+      // Reset the form after successful submission
+      setItem({ name: '', quantity: '', description: '', price: '' });
+    } catch (err) {
+      setError('An error occurred while adding the item. Please try again.');
+      console.error('Error:', err);
+    }
   };
 
   return (
     <div className="add-item-form">
       <h2>Add New Item</h2>
       <form onSubmit={handleSubmit}>
+        {error && <div className="error-message">{error}</div>}
+        
         <input
           type="text"
           name="name"
@@ -87,8 +97,8 @@ const AddItem = () => {
           value={item.price}
           onChange={handleInputChange}
           placeholder="Price"
-          min="0.01" 
-          step="any"  // Allow decimal prices
+          min="0.01"
+          step="any"
         />
         <button type="submit">Add Item</button>
       </form>

@@ -1,63 +1,28 @@
-// src/actions/shoppingListActions.js
-import axiosInstance from '../axiosInstance';
+import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-// Fetch items from the shopping list
-export const fetchItems = () => async (dispatch) => {
-  try {
-    const response = await axiosInstance.get('/shoppingList');
-    const items = response.data.map(item => ({
-      ...item,
-      quantity: Number(item.quantity),  // Convert quantity to number
-      price: Number(item.price) || 0,   // Convert price to number (use 0 if not valid)
-    }));
-    console.log('Fetched items:', items);  // Log the data to ensure conversion
-    dispatch({ type: 'FETCH_ITEMS', payload: items });
-  } catch (error) {
-    // Error is already handled by the interceptor
-    // Optionally, dispatch an action to update the state with the error
-    // dispatch({ type: 'FETCH_ITEMS_ERROR', payload: error });
-  }
-};
 
-// Add a new item to the shopping list
-export const addItem = (item) => async (dispatch) => {
-  try {
-    const response = await axiosInstance.post('/shoppingList', item);
-    dispatch({ type: 'ADD_ITEM', payload: response.data });
-  } catch (error) {
-    // Error is already handled by the interceptor
-    // Optionally, dispatch an action to update the state with the error
-    // dispatch({ type: 'ADD_ITEM_ERROR', payload: error });
-  }
-};
+const API_URL = 'http://localhost:5000/items';
 
-// Update an item in the shopping list
-export const updateItem = (item) => async (dispatch) => {
-  if (!item.id) {
-    console.error("Item ID is missing! Cannot update item.");
-    return;
-  }
+// Add an item
+export const addItem = createAsyncThunk('shoppingList/addItem', async (item) => {
+  const response = await axios.post(API_URL, item);
+  return response.data;
+});
 
-  try {
-    const response = await axios.put(`http://localhost:5000/shoppingList/${item.id}`, item);
-    dispatch({
-      type: 'UPDATE_ITEM',
-      payload: response.data,
-    });
-  } catch (error) {
-    console.error("API Error:", error);
-    // Dispatch error action if needed
-  }
-};
+// Update an item
+export const updateItem = createAsyncThunk('shoppingList/updateItem', async (item) => {
+  const response = await axios.put(`${API_URL}/${item.id}`, item);
+  return response.data;
+});
 
-// Remove an item from the shopping list
-export const removeItem = (id) => async (dispatch) => {
-  try {
-    await axiosInstance.delete(`/shoppingList/${id}`);
-    dispatch({ type: 'REMOVE_ITEM', payload: id });
-  } catch (error) {
-    // Error is already handled by the interceptor
-    // Optionally, dispatch an action to update the state with the error
-    // dispatch({ type: 'REMOVE_ITEM_ERROR', payload: error });
-  }
-};
+// Remove an item
+export const removeItem = createAsyncThunk('shoppingList/removeItem', async (id) => {
+  await axios.delete(`${API_URL}/${id}`);
+  return id; // Return the item ID to remove it from the state
+});
+
+// Fetch all items
+export const fetchShoppingList = createAsyncThunk('shoppingList/fetchShoppingList', async () => {
+  const response = await axios.get(API_URL);
+  return response.data; // Return the list of items
+});

@@ -1,18 +1,10 @@
 {
-  "shoppingList": [
+  "shoppingList": [],
+  "users": [
     {
-      "id": "1",
-      "name": "Apples",
-      "quantity": 11,
-      "price": 3.99,
-      "description": "Fresh red apples"
-    },
-    {
-      "id": "2",
-      "name": "Bananas",
-      "quantity": 5,
-      "price": 1.99,
-      "description": "Ripe yellow bananas"
+      "id": 1740376099205,
+      "email": "kronikwenaite@gmail.com",
+      "password": "$2b$10$gI7Dx5p1WDxFtpP/VqrijOD/duvU.eD.a4yT08.1JWb06KtuzMnQm"
     }
   ]
 }

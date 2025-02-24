@@ -1,6 +1,6 @@
 /* General container styling for the item */
 .item {
-  background-color: #cf6d1c;
+  background-color: #754015;
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgb(247, 247, 247);
@@ -137,4 +137,7 @@ button:disabled {
   .button-container button {
     font-size: 14px;
   }
+}
+.edit-btn,.remove-btn{
+
 }

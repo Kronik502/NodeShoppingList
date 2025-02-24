@@ -1,0 +1,88 @@
+/* auth.css */
+
+/* General Styles for both Login and Register Pages */
+.auth-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f4f4f9;
+    padding: 20px;
+  }
+  
+  .auth-box {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+  }
+  
+  h2 {
+    margin-bottom: 20px;
+    font-size: 1.8rem;
+    color: #333;
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  input[type="email"],
+  input[type="password"] {
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+    outline: none;
+  }
+  
+  input[type="email"]:focus,
+  input[type="password"]:focus {
+    border-color: #007bff;
+  }
+  
+  button {
+    padding: 12px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1.1rem;
+    cursor: pointer;
+  }
+  
+  button:disabled {
+    background-color: #d6e4ff;
+  }
+  
+  button:hover:enabled {
+    background-color: #0056b3;
+  }
+  
+  p {
+    margin-top: 10px;
+    font-size: 1rem;
+    color: #555;
+  }
+  
+  a {
+    color: #007bff;
+    text-decoration: none;
+  }
+  
+  a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Error message styling */
+  .error-message {
+    color: red;
+    margin-bottom: 20px;
+    font-size: 1rem;
+  }
+  
