@@ -63,3 +63,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 Acknowledgments:
 - Thanks to React and Redux for their powerful state management features.
 - Special thanks to CSS for making it easy to style the app and ensure it looks good across devices.
+
+  image
+  ![image](https://github.com/user-attachments/assets/fb4cc96a-59e0-4095-bc46-d4778e95e5d6)
+
